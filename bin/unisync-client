@@ -1,0 +1,97 @@
+#!/bin/bash
+
+set -e
+set -u
+
+etc_dir=/home/luke/projects/unisync/client
+
+unisync_conf=$etc_dir/unisync-client.conf
+source $unisync_conf
+
+targets_dir=$UNISYNC_DIR/targets
+connection_dir=$UNISYNC_DIR/connections
+
+pid_file=$UNISYNC_DIR/unisync-client.pid
+
+connect_cmd="unisync-client-connect"
+
+# Cleanup for trapped signals
+function cleanup {
+    rm -rf $targets_dir/*
+    rm -f $pid_file
+
+    kill_open_connections
+
+    err_msg "Client died!"
+
+    trap - EXIT
+    exit 1
+}
+
+# Output error messages
+function err_msg() {
+    echo "`basename $0` (`date`): $1" >> $UNISYNC_LOG
+    echo "`basename $0` (`date`): $1" 1>&2
+}
+
+# Output log messages
+function log_msg() {
+    echo "`basename $0` (`date`): $1" >> $UNISYNC_LOG
+    echo "`basename $0` (`date`): $1"
+}
+
+function kill_open_connections () {
+    # Kill any open connections 
+    for conn_file in `ls $connection_dir`
+    do
+        target=$(echo $conn_file | sed -r 's/(.*)-[0-9]+$/\1/')
+        target_port=$(echo $conn_file | sed -r 's/.*-([0-9]+)$/\1/')
+        pid=$(cat $connection_dir/$conn_file)
+        
+        log_msg "Killing (possibly old) connection to $target:$target_port"
+        
+        if ( ps --pid $pid -o cmd | tail -n 1 | egrep "$connect_cmd\s+$target\s+$target_port" &> /dev/null )
+        then
+            kill $pid
+        fi
+
+        rm -f $connection_dir/$conn_file
+    done
+}
+
+touch $pid_file
+old_pid=`cat $pid_file`
+if [ ! -z $old_pid ]
+then
+    echo "Old PID found... $old_pid"
+    if ( ps --pid $old_pid -o cmd | tail -n 1 | egrep "$0$" )
+    then
+        err_msg "Unisync client is already running! (PID: $old_pid)"
+        exit 2
+    fi
+fi
+
+trap cleanup INT TERM EXIT
+
+echo $$ > $pid_file
+
+# Make all required directories
+mkdir -p $targets_dir
+mkdir -p $connection_dir
+
+
+# Cleanup stale targets
+rm -rf $targets_dir/*
+
+kill_open_connections
+
+log_msg "Starting lsync..."
+lsyncd -log all $etc_dir/unisync-client.lua
+err_msg "lsyncd died"
+
+# Remove dead targets
+rm -rf $targets_dir/*
+
+kill_open_connections
+
+trap - EXIT
