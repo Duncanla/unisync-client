@@ -23,10 +23,10 @@ connection_dir=$UNISYNC_DIR/connections
 
 pid_file=$UNISYNC_DIR/unisync-client.pid
 
-connect_cmd_name=`echo unisync-client-connect | sed '@program_transform_name@'`
+connect_cmd_name="@unisync-client-connect@"
 
 user_conf_file=$UNISYNC_DIR/unisync-client.lua
-blank_user_conf=$etc_dir/unisync-client-userconf.lua
+blank_user_conf=$etc_dir/unisync-client-user.lua
 
 function usage {
     cat << EOF
@@ -69,6 +69,7 @@ then
     usage
     exit
     ;;
+  esac
 fi
 
 # Cleanup for trapped signals
@@ -81,6 +82,7 @@ function cleanup {
     err_msg "Client died!"
 
     trap - EXIT
+
     exit 1
 }
 
