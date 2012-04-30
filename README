@@ -19,9 +19,9 @@ Installation
 Consult the INSTALL file for information on how to install the unisync
 client.
 
-#############
+=============
 Configuration
-#############
+=============
 
 On the first run, unisync-client will create a ~/.unisync directory
 and place a skeleton configuration file name unisync-client.lua. This
