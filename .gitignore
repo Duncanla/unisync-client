@@ -10,6 +10,8 @@ config.status
 configure.scan
 install-sh
 autoscan.log
+Makefile.in
+configure
 
 # Build Files #
 bin/unisync-client
