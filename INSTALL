@@ -15,6 +15,10 @@ installed prior to installing the client.
 Installation
 ============
 
+If you pulled the source from git, run autogen:
+
+./autogen.sh
+
 To install the client, execute the following in the root directory of
 the code:
 
