@@ -1,6 +1,7 @@
 
 pkglibexec_SCRIPTS = unisync-client-connect unisync-client-syncinit unisync-client-sync
 
+EXTRA_DIST = unisync-client-connect.sh unisync-client-syncinit.sh unisync-client-sync.sh
 CLEANFILES = $(pkglibexec_SCRIPTS)
 
 pkgsysconfdir = $(sysconfdir)/$(PACKAGE)

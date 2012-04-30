@@ -2,6 +2,7 @@
 pkgsysconfdir = $(sysconfdir)/$(PACKAGE)
 pkgsysconf_DATA = unisync-client.lua unisync-client-user.lua unisync-client.conf
 
+EXTRA_DIST = unisync-client.lua.in unisync-client-user.lua unisync-client.conf
 CLEANFILES = unisync-client.lua
 
 do_subst = sed -i -e 's,[@]pkgsysconfdir[@],$(pkgsysconfdir),g' \

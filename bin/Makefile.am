@@ -1,7 +1,9 @@
 
 bin_SCRIPTS = unisync-client
 
+EXTRA_DIST = unisync-client.sh
 CLEANFILES = $(bin_SCRIPTS)
+
 
 pkgsysconfdir = $(sysconfdir)/$(PACKAGE)
 
