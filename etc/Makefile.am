@@ -1,5 +1,5 @@
 
-pkgsysconfdir = $(sysconfdir)/$(PROGRAM)
+pkgsysconfdir = $(sysconfdir)/$(PACKAGE)
 pkgsysconf_DATA = unisync-client.lua unisync-client-user.lua unisync-client.conf
 
 CLEANFILES = unisync-client.lua

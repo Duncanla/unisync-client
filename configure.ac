@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.68])
-AC_INIT(unisync-client, 0.1, github.com/Duncanl/unisync-client)
+AC_INIT([unisync-client], 0.1, [github.com/Duncanl/unisync-client])
 
 # Checks for programs.
 
@@ -34,7 +34,7 @@ if test $UNISON = no; then
    exit
 fi
 
-AC_CEHCK_PROG(AUTOSSH, autossh, yes, no)
+AC_CHECK_PROG(AUTOSSH, autossh, yes, no)
 if test $AUTOSSH = no; then
    AC_MSG_ERROR([Fatal Error: autossh was not found])
    exit

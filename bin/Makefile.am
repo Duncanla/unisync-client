@@ -3,7 +3,7 @@ bin_SCRIPTS = unisync-client
 
 CLEANFILES = $(bin_SCRIPTS)
 
-pkgsysconfdir = $(sysconfdir)/$(PROGRAM)
+pkgsysconfdir = $(sysconfdir)/$(PACKAGE)
 
 do_subst = sed -i -e 's,[@]pkgsysconfdir[@],$(pkgsysconfdir),g' \
 			      -e 's,[@]VERSION[@],$(VERSION),g'
