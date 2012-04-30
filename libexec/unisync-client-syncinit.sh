@@ -64,7 +64,7 @@ target_dir=$targets_dir/$target_host-$target_port
 status_file=$target_dir/client_conn_status
 client_dir=$target_dir/clients
 
-connect_cmd=unisync-client-connect
+connect_cmd=@pkglibexecdir@/@unisync-client-connect@
 target_reg_client_cmd="unisync-reg-client"
 
 port_file=$target_dir/client_port
