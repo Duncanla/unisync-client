@@ -25,6 +25,9 @@ pid_file=$UNISYNC_DIR/unisync-client.pid
 
 connect_cmd_name=`echo unisync-client-connect | sed '@program_transform_name@'`
 
+user_conf_file=$UNISYNC_DIR/unisync-client.lua
+blank_user_conf=$etc_dir/unisync-client-userconf.lua
+
 function usage {
     cat << EOF
 Usage:
@@ -125,6 +128,16 @@ then
 fi
 
 trap cleanup INT TERM EXIT
+
+mkdir -p $UNISYNC_DIR
+
+# Quit if there is no user configuration
+if [ ! -f $user_conf_file ]
+then
+    err_msg "No user config found. Please add the configuration to $user_conf_file"
+    cp $blank_user_conf $user_conf_file
+    exit 1
+fi
 
 echo $$ > $pid_file
 
