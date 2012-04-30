@@ -1,0 +1,18 @@
+
+*~
+*.o
+missing
+Makefile
+aclocal.m4
+autom4te.cache
+config.log
+config.status
+configure.scan
+install-sh
+autoscan.log
+
+# Build Files #
+bin/unisync-client
+libexec/unisync-client-connect
+libexec/unisync-client-sync
+libexec/unisync-client-syncinit

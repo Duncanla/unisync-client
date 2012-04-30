@@ -1,9 +1,20 @@
-#!/bin/bash
+# -* bash -*
+
+#
+# Unisync client sync initialization
+# 
+# Copyright (c) 2012, Luke Duncan <Duncan72187@gamil.com>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public license version 2 as
+# published by the Free Software Foundation. See COPYING for more details.
+#
+
 
 set -e
 set -u
 
-etc_dir=/home/luke/projects/unisync/client
+etc_dir=@pkgsysconfdir@
 
 unisync_conf=$etc_dir/unisync-client.conf
 source $unisync_conf

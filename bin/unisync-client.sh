@@ -1,9 +1,19 @@
-#!/bin/bash
+# -* bash -*
+
+#
+# Unisync client
+# 
+# Copyright (c) 2012, Luke Duncan <Duncan72187@gmail.com>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public license version 2 as
+# published by the Free Software Foundation. See COPYING for more details.
+#
 
 set -e
 set -u
 
-etc_dir=/home/luke/projects/unisync/client
+etc_dir=@pkgsysconfdir@
 
 unisync_conf=$etc_dir/unisync-client.conf
 source $unisync_conf
@@ -13,7 +23,50 @@ connection_dir=$UNISYNC_DIR/connections
 
 pid_file=$UNISYNC_DIR/unisync-client.pid
 
-connect_cmd="unisync-client-connect"
+connect_cmd_name="unisync-client-connect"
+
+function usage {
+    cat << EOF
+Usage:
+% unisync-client [OPTION]
+
+Options: 
+    --help      Print this message
+    --version   Print version information
+
+Submit bug reports at github.com/Duncanla/unisync-client
+EOF
+}
+
+function version {
+    cat <<EOF
+unisync-client @VERSION@
+Unisync client for syncing directories with a host
+
+This is free software, and you are welcome to redistribute it and modify it 
+under certain conditions. There is ABSOLUTELY NO WARRANTY for this software.
+For legal details see the GNU General Public License.
+
+EOF
+}
+
+# Parse options
+if test $# -ne 0
+then
+  case $1 in
+  --help)
+    usage
+    exit
+    ;;
+  --version)
+    version
+    exit
+    ;;
+  *)
+    usage
+    exit
+    ;;
+fi
 
 # Cleanup for trapped signals
 function cleanup {
@@ -50,7 +103,7 @@ function kill_open_connections () {
         
         log_msg "Killing (possibly old) connection to $target:$target_port"
         
-        if ( ps --pid $pid -o cmd | tail -n 1 | egrep "$connect_cmd\s+$target\s+$target_port" &> /dev/null )
+        if ( ps --pid $pid -o cmd | tail -n 1 | egrep "$connect_cmd_name\s+$target\s+$target_port" &> /dev/null )
         then
             kill $pid
         fi
