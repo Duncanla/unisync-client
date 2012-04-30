@@ -34,6 +34,12 @@ if test $UNISON = no; then
    exit
 fi
 
+AC_CEHCK_PROG(AUTOSSH, autossh, yes, no)
+if test $AUTOSSH = no; then
+   AC_MSG_ERROR([Fatal Error: autossh was not found])
+   exit
+fi
+
 # Checks for libraries.
 
 # Checks for header files.
