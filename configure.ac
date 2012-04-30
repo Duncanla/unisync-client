@@ -21,4 +21,5 @@ AC_CONFIG_FILES([Makefile
                  libexec/Makefile])
 
 AM_INIT_AUTOMAKE
+AC_ARG_PROGRAM
 AC_OUTPUT

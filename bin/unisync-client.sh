@@ -23,7 +23,7 @@ connection_dir=$UNISYNC_DIR/connections
 
 pid_file=$UNISYNC_DIR/unisync-client.pid
 
-connect_cmd_name="echo unisync-client-connect | sed @program_transform_name@"
+connect_cmd_name=`echo unisync-client-connect | sed '@program_transform_name@'`
 
 function usage {
     cat << EOF
