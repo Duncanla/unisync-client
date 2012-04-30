@@ -18,3 +18,4 @@ bin/unisync-client
 libexec/unisync-client-connect
 libexec/unisync-client-sync
 libexec/unisync-client-syncinit
+etc/unisync-client.lua

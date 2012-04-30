@@ -18,7 +18,8 @@ AC_PATH_PROGS(BASH, bash sh)
 
 AC_CONFIG_FILES([Makefile
                  bin/Makefile
-                 libexec/Makefile])
+                 libexec/Makefile
+                 etc/Makefile])
 
 AM_INIT_AUTOMAKE
 AC_ARG_PROGRAM

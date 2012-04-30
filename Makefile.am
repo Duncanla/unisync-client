@@ -1,2 +1,3 @@
 
-SUBDIRS = bin libexec
+SUBDIRS = bin libexec etc
+
