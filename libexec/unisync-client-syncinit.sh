@@ -65,7 +65,6 @@ status_file=$target_dir/client_conn_status
 client_dir=$target_dir/clients
 
 connect_cmd=@pkglibexecdir@/@unisync-client-connect@
-target_reg_client_cmd="unisync-reg-client"
 
 port_file=$target_dir/client_port
 
@@ -140,7 +139,7 @@ target_client_options=\'$(echo $client_options | sed "s/<UNISYNC_CLIENT_PORT>/$p
 # register the client with the server
 log_msg "Registering with the $target_host:$target_port with reverse forwarding port $port"
 log_msg "and options $target_client_options"
-ssh -p $target_port $target_host "$target_reg_client_cmd $port $target_client_options"
+ssh -p $target_port $target_host "$TARGET_CLIENT_REG_CMD $port $target_client_options"
 log_msg "Client registration returned with exit status $?"
 
 trap - EXIT

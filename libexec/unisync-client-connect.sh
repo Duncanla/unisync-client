@@ -36,10 +36,6 @@ autossh_pid_file=$target_dir/autossh.pid
 mkdir -p $target_dir
 echo 0 > $target_dir/client_conn_status
 
-target_port_cmd="unisync-client-port"
-target_monitor_cmd="unisync-client-mon"
-target_reg_client_cmd="unisync-reg-client"
-
 # Cleanup for trapped signals
 function cleanup {
     rm -f $status_file
@@ -74,7 +70,7 @@ function log_msg() {
 
 # Kill existing autossh process for this target
 touch $autossh_pid_file
-autossh_cmd_check="autossh -M 0 -p $target_port $target_host $target_port_cmd"
+autossh_cmd_check="autossh -M 0 -p $target_port $target_host $TARGET_PORT_CMD"
 oldpid=`cat $autossh_pid_file`
 if [ -f $autossh_pid_file ]
 then
@@ -93,7 +89,7 @@ echo $$ > $connection_file
 while true
 do
     # Request to open a port from the target_host. Exit with 255 to tell autossh to try again
-    AUTOSSH_GATETIME=0 AUTOSSH_POLL=60 AUTOSSH_PIDFILE=$autossh_pid_file autossh -M 0 -p $target_port $target_host "$target_port_cmd || exit 255" > $port_file &
+    AUTOSSH_GATETIME=0 AUTOSSH_POLL=60 AUTOSSH_PIDFILE=$autossh_pid_file autossh -M 0 -p $target_port $target_host "$TARGET_PORT_CMD || exit 255" > $port_file &
     autossh_pid=$!
 
     wait $autossh_pid
@@ -111,12 +107,12 @@ do
             client_options=\'$client_options\'
             log_msg "Registering initialized client: $client_file"
             log_msg "With options: $client_options"
-            ssh -p $target_port $target_host "$target_reg_client_cmd $port $client_options"
+            ssh -p $target_port $target_host "$TARGET_CLIENT_REG_CMD $port $client_options"
         done
     fi
 
     # Open up the client monitor connection
-    ssh -p $target_port -o "ServerAliveInterval 60" -o "ServerAliveCountMax 3" -R$port:localhost:22 $target_host "$target_monitor_cmd $port" &
+    ssh -p $target_port -o "ServerAliveInterval 60" -o "ServerAliveCountMax 3" -R$port:localhost:22 $target_host "$TARGET_MON_CMD $port" &
     ssh_pid=$!
 
     # Ignore errors on the client monitor as it will return nonzero exit code when the connection drops
