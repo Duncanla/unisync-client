@@ -117,6 +117,8 @@ function kill_open_connections () {
     done
 }
 
+mkdir -p $UNISYNC_DIR
+
 touch $pid_file
 old_pid=`cat $pid_file`
 if [ ! -z $old_pid ]
@@ -130,8 +132,6 @@ then
 fi
 
 trap cleanup INT TERM EXIT
-
-mkdir -p $UNISYNC_DIR
 
 # Quit if there is no user configuration
 if [ ! -f $user_conf_file ]
