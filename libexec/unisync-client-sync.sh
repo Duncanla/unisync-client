@@ -60,10 +60,10 @@ fi
 port=`head -n 1 $port_file`
 
 client_options=`echo "-root ssh://localhost:$port/$root1_dir -targetid $target_id $options"`
-# make sure the shell doesn't mess with our options 
-target_client_options=\'$client_options\'
+
+log_msg "Requesting a sync..."
 
 # request a sync
-ssh -p $target_port $target_host "$TARGET_SYNC_REQ_CMD $port $target_client_options"
+ssh -p $target_port $target_host $TARGET_SYNC_REQ_CMD $port $client_options
 
 log_msg "Initiated request for sync."

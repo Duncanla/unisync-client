@@ -26,14 +26,16 @@ client_update = {
                local paths = elist.getPaths()
                
                --remove leading / from paths for unison
+               --substitue ' for '\'' to get through bash
                local unisonPaths = {}
                for _, pathStr in ipairs(paths) do
                   local path = string.sub(pathStr, 2)
+                  path = string.gsub(path, "'", "'\\''")
                   table.insert(unisonPaths, path) 
                end
 
                -- Format path options for unison
-               local pathsOpt = "-path " .. table.concat(unisonPaths," -path ")
+               local pathsOpt = "-path \'" .. table.concat(unisonPaths,"\' -path \'") .. "\'"
                log("Normal", "Local files changed. Syncing...\n", paths)
                
                -- Remove trailing / from source for consistency
