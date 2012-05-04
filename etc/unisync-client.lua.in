@@ -21,6 +21,8 @@ client_update = {
    delay = 5,
 
    action = function(inlet)
+               local max_update = 30000
+
                local elist = inlet.getEvents()
                local config = inlet.getConfig()
                local paths = elist.getPaths()
@@ -36,6 +38,14 @@ client_update = {
 
                -- Format path options for unison
                local pathsOpt = "-path \'" .. table.concat(unisonPaths,"\' -path \'") .. "\'"
+
+               -- For execessively large updates, just sync the whole thing
+               -- This errors caused by a command that is too long
+               if ( string.len(pathsOpt) > max_update ) then
+                  log("Normal", "Huge update (" .. string.len(pathsOpt) .. " characters!). Requesting a full sync.") 
+                  pathsOpt = ""
+               end
+
                log("Normal", "Local files changed. Syncing...\n", paths)
                
                -- Remove trailing / from source for consistency
@@ -90,7 +100,7 @@ client_update = {
                 ignore = "\"" .. ignore .. "\""
                 table.insert(unisonIgnores, ignore)
              end
-             
+
              local ignoreS = table.concat(unisonIgnores, '\n')
              log("Normal", "Converted excludes to unison ignores\n",
                  table.concat(excludes,"\n"), "\n------>\n", ignoreS)

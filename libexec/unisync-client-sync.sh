@@ -3,7 +3,7 @@
 #
 # Unisync client sync
 # 
-# Copyright (c) 2012, Luke Duncan <Duncan72187@gamil.com>
+# Copyright (c) 2012, Luke Duncan <Duncan72187@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public license version 2 as
@@ -63,7 +63,18 @@ client_options=`echo "-root ssh://localhost:$port/$root1_dir -targetid $target_i
 
 log_msg "Requesting a sync..."
 
-# request a sync
-ssh -p $target_port $target_host $TARGET_SYNC_REQ_CMD $port $client_options
+# make sure the shell doesn't mess with our options
+target_client_options=\"$client_options\"
 
-log_msg "Initiated request for sync."
+# request a sync
+set +e
+ssh -p $target_port $target_host $TARGET_SYNC_REQ_CMD $port $target_client_options
+sync_req_exit_code=$?
+set -e
+
+if [ $sync_req_exit_code -eq 0 ]
+then
+    log_msg "Initiated request for sync."
+else
+    err_msg "Failed to request sync. Target returned $sync_req_exit_code"
+fi

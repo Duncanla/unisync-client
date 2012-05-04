@@ -17,7 +17,7 @@ cmd_subst = sed -i "s/[@]unisync-client-connect[@]/$(conn_cmd)/g"
 
 $(pkglibexec_SCRIPTS):%: %.sh
 	rm -f $@
-	echo "#! " $(BASH) > $@
+	echo "#!" $(BASH) > $@
 	cat $^ >> $@
 	$(do_subst) $@
 	$(cmd_subst) $@
