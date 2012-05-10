@@ -3,7 +3,7 @@
 # Quick HowTo:
 # 1. Copy this file to /etc/systemd/system/unisync-client-<USER>.service
 # 2. Edit <USER> and unisync-client parameters appropriately
-#   ("runuser -l <USER> -c /usr/bin/vncserver %i -arg1 -arg2")
+#   ("runuser -l <USER> -c /usr/bin/unisync-client")
 # 3. Run `systemctl daemon-reload`
 #
 
