@@ -1,0 +1,21 @@
+# The unisync-client service unit file
+#
+# Quick HowTo:
+# 1. Copy this file to /etc/systemd/system/unisync-client-<USER>.service
+# 2. Edit <USER> and unisync-client parameters appropriately
+#   ("runuser -l <USER> -c /usr/bin/vncserver %i -arg1 -arg2")
+# 3. Run `systemctl daemon-reload`
+#
+
+
+[Unit]
+Description=Unisync file synchronization client
+After=syslog.target
+After=remote-fs.target
+
+[Service]
+Type=simple
+ExecStart=/sbin/runuser -l <USER> -c "/usr/local/bin/unisync-client"
+
+[Install]
+WantedBy=multi-user.target
