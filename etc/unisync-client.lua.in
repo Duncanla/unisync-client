@@ -41,6 +41,7 @@ client_update = {
 
                -- For execessively large updates, just sync the whole thing
                -- This errors caused by a command that is too long
+               local ignoreOpt=""
                if ( string.len(pathsOpt) > max_update ) then
                   log("Normal", "Huge update (" .. string.len(pathsOpt) .. " characters!). Requesting a full sync.") 
                   pathsOpt = ""
@@ -60,6 +61,7 @@ client_update = {
                           config.targethost, config.targetport,
                           sourceOpt,
                           config.target,
+                          config.ignoreOpt,
                           pathsOpt,
                           table.concat(config.unisonOpts, " ") )
             end,
@@ -68,7 +70,7 @@ client_update = {
              local inlet = event.inlet;
              local config = inlet.getConfig()
              
-             -- converter excludes to unison ignore statements
+             -- convert excludes to unison ignore statements
              local unisonIgnores = {}
              local excludes = inlet.getExcludes()
              for _, excludeStr in ipairs(excludes) do
@@ -108,6 +110,7 @@ client_update = {
              local ignoreOpt = "-ignore " .. table.concat(unisonIgnores,
                                                     " -ignore ");
 
+             config.ignoreOpt = ignoreOpt
              -- Remove trailing / from source for consistency
              local sourceOpt = config.source
              if ( string.sub(sourceOpt, -1) == "/") then
