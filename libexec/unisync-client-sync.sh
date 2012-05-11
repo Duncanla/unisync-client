@@ -68,7 +68,7 @@ target_client_options=\"$client_options\"
 
 # request a sync
 set +e
-ssh -p $target_port $target_host "$TARGET_SYNC_REQ_CMD $port $target_client_options" &>> $UNISYNC_LOG
+ssh -p $target_port $target_host $TARGET_SYNC_REQ_CMD $port $target_client_options &>> $UNISYNC_LOG
 sync_req_exit_code=$?
 set -e
 
