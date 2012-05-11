@@ -134,12 +134,12 @@ rm -f $lockfile
 trap - INT TERM EXIT
 
 # make sure the shell doesn't mess with our options 
-target_client_options=\'$(echo $client_options | sed "s/<UNISYNC_CLIENT_PORT>/$port/")\'
+target_client_options=\"$(echo $client_options | sed "s/<UNISYNC_CLIENT_PORT>/$port/")\"
 
 # register the client with the server
 log_msg "Registering with the $target_host:$target_port with reverse forwarding port $port"
 log_msg "and options $target_client_options"
-ssh -p $target_port $target_host "$TARGET_CLIENT_REG_CMD $port $target_client_options"
+ssh -p $target_port $target_host $TARGET_CLIENT_REG_CMD $port $target_client_options
 log_msg "Client registration returned with exit status $?"
 
 trap - EXIT

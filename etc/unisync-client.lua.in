@@ -97,9 +97,7 @@ client_update = {
                    ignore = string.gsub(ignore,"(.*)/$","^(.*/)*%1$")
                 end
 
-                ignore = "Regex " .. ignore
-                -- add some quotes to escape the regexp
-                ignore = "\"" .. ignore .. "\""
+                ignore = "\'Regex " .. ignore .. "\'"
                 table.insert(unisonIgnores, ignore)
              end
 
