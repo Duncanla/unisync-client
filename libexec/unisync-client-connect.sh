@@ -103,11 +103,10 @@ do
     then
         for client_file in $client_dir/client-*
         do
-            client_options=$(cat $client_file | sed -r "s/<UNISYNC_CLIENT_PORT>/$port/")
-            client_options=\'$client_options\'
+            client_options=\"$(cat $client_file | sed -r "s/<UNISYNC_CLIENT_PORT>/$port/")\"
             log_msg "Registering initialized client: $client_file"
             log_msg "With options: $client_options"
-            ssh -p $target_port $target_host "$TARGET_CLIENT_REG_CMD $port $client_options"
+            ssh -p $target_port $target_host $TARGET_CLIENT_REG_CMD $port $client_options
         done
     fi
 
