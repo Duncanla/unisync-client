@@ -97,6 +97,14 @@ client_update = {
                    ignore = string.gsub(ignore,"(.*)/$","^(.*/)*%1$")
                 end
 
+                -- Lsyncd matches anywhere in the path
+                if (string.sub(ignore, 1, 1) ~= "^") then
+                   ignore = ".*" .. ignore
+                end
+                if (string.sub(ignore, -1,-1) ~= "$") then
+                   ignore = ignore .. ".*"
+                end
+
                 ignore = "\'Regex " .. ignore .. "\'"
                 table.insert(unisonIgnores, ignore)
              end
