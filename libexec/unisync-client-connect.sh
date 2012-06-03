@@ -111,11 +111,12 @@ do
     fi
 
     # Open up the client monitor connection
+    set +e
     ssh -p $target_port -o "ServerAliveInterval 60" -o "ServerAliveCountMax 3" -R$port:localhost:22 $target_host "$TARGET_MON_CMD $port" &
     ssh_pid=$!
 
     # Ignore errors on the client monitor as it will return nonzero exit code when the connection drops
-    set +e
+
     wait $ssh_pid
     set -e
 
