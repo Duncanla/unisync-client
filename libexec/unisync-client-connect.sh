@@ -98,6 +98,12 @@ do
     echo 1 > $status_file
     log_msg "CONNECTED to $target_host:$target_port. Using reverse tunneling on target port $port"
 
+    # Open up the client monitor connection
+    log_msg "Starting monitor on $target_host:$target_port"
+    ssh -p $target_port -o "ServerAliveInterval 60" -o "ServerAliveCountMax 3" -R$port:localhost:22 $target_host "$TARGET_MON_CMD $port" &
+    ssh_pid=$!
+
+
     # Re-register clients with the target_host
     if `ls $client_dir/client-* &> /dev/null`
     then
@@ -106,17 +112,18 @@ do
             client_options=\"$(cat $client_file | sed -r "s/<UNISYNC_CLIENT_PORT>/$port/")\"
             log_msg "Registering initialized client: $client_file"
             log_msg "With options: $client_options"
-            ssh -p $target_port $target_host $TARGET_CLIENT_REG_CMD $port $client_options
+            if ! (ssh -p $target_port $target_host $TARGET_CLIENT_REG_CMD $port $client_options)
+            then
+                log_msg "Unable to register initialized client: $client_file"
+                kill $ssh_pid
+            else
+                log_msg "Successfully registered initialized client: $client_file"
+            fi
         done
     fi
-
-    # Open up the client monitor connection
-    set +e
-    ssh -p $target_port -o "ServerAliveInterval 60" -o "ServerAliveCountMax 3" -R$port:localhost:22 $target_host "$TARGET_MON_CMD $port" &
-    ssh_pid=$!
-
+    
     # Ignore errors on the client monitor as it will return nonzero exit code when the connection drops
-
+    set +e
     wait $ssh_pid
     set -e
 
