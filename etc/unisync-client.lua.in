@@ -20,6 +20,18 @@ settings = {
 client_update = {
    delay = 5,
 
+   checkgauge = {
+      action = true,
+      init = true,
+      
+      source = true,
+      target = true,
+      targethost = true,
+      targetport = true,
+      exclude = true,
+      unisonOpts = true,
+   },
+
    action = function(inlet)
                local max_update = 30000
 
